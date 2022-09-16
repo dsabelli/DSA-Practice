@@ -23,13 +23,25 @@ class SinglyLinkedList {
     this.length++;
     return this;
   }
+  pop() {
+    if (!this.length) {
+      return undefined;
+    }
+    let current = this.head;
+    let pre = null;
+    while (current.next) {
+      pre = current;
+      current = current.next;
+    }
+    this.length--;
+    this.length === 0
+      ? ((this.head = null), (this.tail = null))
+      : (pre.next = null),
+      (this.tail = pre);
+
+    console.log(this.tail, this.length);
+    return current;
+  }
 }
 
 const list = new SinglyLinkedList();
-
-list.push(69);
-list.push(60);
-list.push(22);
-list.push(30);
-list.push(44);
-console.log(list);
