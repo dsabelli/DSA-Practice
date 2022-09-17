@@ -64,6 +64,34 @@ class SinglyLinkedList {
     this.length++;
     return this;
   }
+  get(val) {
+    let item = this.head;
+    let step = 0;
+    if (!this.length || val >= this.length || val < 0) {
+      return null;
+    }
+    if (val === 0) {
+      return item;
+    }
+    while (val > step) {
+      item = item.next;
+      step++;
+    }
+    return item;
+  }
+  set(index, val) {
+    let node = this.get(index);
+    if (node) {
+      node.val = val;
+      return true;
+    }
+    return false;
+  }
 }
 
 const list = new SinglyLinkedList();
+list.push(21);
+list.push(241);
+list.push(123);
+list.push(445);
+console.log(list.set(5, 69));
