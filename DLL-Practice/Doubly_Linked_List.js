@@ -144,14 +144,20 @@ class DoublyLinkedList {
       return current;
     }
   }
+  reverse() {
+    let temp;
+    temp = this.tail;
+    this.tail = this.head;
+    this.head = temp;
+    let current = this.head;
+    for (let i = 0; i < this.length; i++) {
+      let temp = current.next;
+      current.next = current.prev;
+      current.prev = temp;
+      current = current.next;
+    }
+    this.head.prev = null;
+    this.tail.next = null;
+    return this;
+  }
 }
-
-const list = new DoublyLinkedList();
-
-list.push(1);
-list.push(2);
-list.push(3);
-list.push(4);
-
-list.remove(1);
-console.log(list);
