@@ -99,6 +99,14 @@ class DoublyLinkedList {
     }
     return current;
   }
+  set(index, val) {
+    let node = this.get(index);
+    if (node) {
+      node.val = val;
+      return true;
+    }
+    return false;
+  }
 }
 
 const list = new DoublyLinkedList();
