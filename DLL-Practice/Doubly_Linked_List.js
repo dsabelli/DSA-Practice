@@ -126,13 +126,32 @@ class DoublyLinkedList {
     }
     return true;
   }
+  remove(index) {
+    if (index >= this.length || index < 0) {
+      return false;
+    }
+    if (index === 0) {
+      this.shift();
+    } else if (index === this.length - 1) {
+      this.pop();
+    } else {
+      let current = this.get(index);
+      current.prev.next = current.next;
+      current.next.prev = current.prev;
+      current.next = null;
+      current.prev = null;
+      this.length--;
+      return current;
+    }
+  }
 }
 
 const list = new DoublyLinkedList();
 
 list.push(1);
 list.push(2);
+list.push(3);
 list.push(4);
 
-list.insert(1, 3);
+list.remove(1);
 console.log(list);
