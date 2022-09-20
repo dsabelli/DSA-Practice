@@ -21,20 +21,14 @@ class MaxBinaryHeap {
   extractMax() {
     let heap = this.values;
     if (!heap.length) return undefined;
-
     let temp = heap[0];
     heap[0] = heap[heap.length - 1];
     heap[heap.length - 1] = temp;
-
     let max = heap.pop();
-
     let index = 0;
-
     while (heap[index] < heap[getChildIndex(heap, index)]) {
       let biggestChildIndex = getChildIndex(heap, index);
-
       temp = heap[biggestChildIndex];
-
       heap[biggestChildIndex] = heap[index];
       heap[index] = temp;
       index = biggestChildIndex;
