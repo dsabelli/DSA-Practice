@@ -27,20 +27,20 @@ class PriorityQueue {
   }
   dequeue() {
     let queue = this.values;
-    if (!queue.length) return undefined;
+    if (!queue.length) return queue;
     let temp = queue[0];
     queue[0] = queue[queue.length - 1];
     queue[queue.length - 1] = temp;
     let min = queue.pop();
     let index = 0;
-    while (
-      queue[index].priority > queue[getChildIndex(queue, index)].priority
-    ) {
-      let smallestChildIndex = getChildIndex(queue, index);
-      temp = queue[smallestChildIndex];
-      queue[smallestChildIndex] = queue[index];
+    let smallest = getChildIndex(queue, index);
+
+    while (smallest !== index) {
+      temp = queue[smallest];
+      queue[smallest] = queue[index];
       queue[index] = temp;
-      index = smallestChildIndex;
+      index = smallest;
+      smallest = getChildIndex(queue, index);
     }
     return min;
   }
@@ -50,22 +50,17 @@ function getChildIndex(queue, index) {
   let childOneIndex = 2 * index + 1;
   let childTwoIndex = 2 * index + 2;
 
-  return queue.length <= 2
-    ? childOneIndex
-    : queue[childOneIndex].priority < queue[childTwoIndex].priority
-    ? childOneIndex
-    : childTwoIndex;
+  if (
+    childTwoIndex < queue.length &&
+    queue[childOneIndex].priority < queue[childTwoIndex].priority
+  )
+    return childOneIndex;
+
+  if (
+    childTwoIndex < queue.length &&
+    queue[childOneIndex].priority > queue[childTwoIndex].priority
+  )
+    return childTwoIndex;
+  if (queue.length <= 2) return 1;
+  return index;
 }
-
-const pQ = new PriorityQueue();
-
-pQ.enqueue(1, 5);
-pQ.enqueue(222, 1);
-pQ.enqueue(33453, 4);
-pQ.enqueue(4, 2);
-pQ.enqueue(7, 3);
-pQ.enqueue(5634, 11);
-pQ.enqueue(67853, 7);
-pQ.enqueue(3433, 13);
-console.log(pQ);
-console.log(pQ.dequeue());
