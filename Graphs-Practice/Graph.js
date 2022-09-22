@@ -40,6 +40,22 @@ class Graph {
     DFS(vtx);
     return path;
   }
+  DFSIterative(vtx) {
+    const list = this.adjacencyList;
+    const visited = {};
+    const path = [];
+    const stack = [vtx];
+    let currentVtx;
+    while (stack.length) {
+      currentVtx = stack.pop();
+      path.push(currentVtx);
+      visited[currentVtx] = true;
+      list[currentVtx].forEach((v) =>
+        visited[v] ? null : (stack.push(v), (visited[v] = true))
+      );
+    }
+    return path;
+  }
 }
 
 const graph = new Graph();
@@ -58,4 +74,4 @@ graph.addEdge("D", "E");
 graph.addEdge("D", "F");
 graph.addEdge("E", "F");
 
-console.log(graph.DFSRecursive("C"));
+console.log(graph.DFSIterative("A"));
