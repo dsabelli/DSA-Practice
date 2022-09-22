@@ -24,14 +24,38 @@ class Graph {
     if (list[v1]) list[v1] = list[v1].filter((v) => v !== v2);
     if (list[v2]) list[v2] = list[v2].filter((v) => v !== v1);
   }
+  DFSRecursive(vtx) {
+    const list = this.adjacencyList;
+    const visited = {};
+    const path = [];
+    const DFS = (vtx) => {
+      if (!list[vtx].length) return;
+      visited[vtx] = true;
+      path.push(vtx);
+      for (let i = 0; i < list[vtx].length; i++) {
+        let nextVtx = list[vtx][i];
+        if (!visited[nextVtx]) DFS(nextVtx);
+      }
+    };
+    DFS(vtx);
+    return path;
+  }
 }
 
 const graph = new Graph();
 
-graph.addVertex("Leamington");
-graph.addVertex("London");
-graph.addVertex("Montreal");
-graph.addEdge("Leamington", "London");
-graph.addEdge("Leamington", "Montreal");
-console.log(graph.removeVertex("Leamington"));
-console.log(graph);
+graph.addVertex("A");
+graph.addVertex("B");
+graph.addVertex("C");
+graph.addVertex("D");
+graph.addVertex("E");
+graph.addVertex("F");
+graph.addEdge("A", "B");
+graph.addEdge("A", "C");
+graph.addEdge("B", "D");
+graph.addEdge("C", "E");
+graph.addEdge("D", "E");
+graph.addEdge("D", "F");
+graph.addEdge("E", "F");
+
+console.log(graph.DFSRecursive("C"));
