@@ -3,18 +3,21 @@ const fibonacciNaive = (n) => {
   return fibonacciNaive(n - 1) + fibonacciNaive(n - 2);
 };
 
-const fibonacciDynamic = (n, memo = []) => {
+const fibonacciMemo = (n, memo = []) => {
   if (memo[n] !== undefined) return memo[n];
   if (n <= 2) return 1;
-  let res = fibonacciDynamic(n - 1, memo) + fibonacciDynamic(n - 2, memo);
+  let res = fibonacciMemo(n - 1, memo) + fibonacciMemo(n - 2, memo);
   memo[n] = res;
   return res;
 };
 
-const fib = (n) => {
-  let memo = [undefined, 1, 1];
-  memo[n] = fibonacciDynamic(n - 1) + fibonacciDynamic(n - 2);
-  return memo[n];
+const fibonacciTab = (n) => {
+  if (n <= 2) return 1;
+  let fibNums = [0, 1, 1];
+  for (let i = 3; i <= n; i++) {
+    fibNums[i] = fibNums[i - 1] + fibNums[i - 2];
+  }
+  return fibNums[n];
 };
 
-console.log(fib(333));
+console.log(fibonacciTab(100));
