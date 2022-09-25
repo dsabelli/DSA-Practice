@@ -1,20 +1,69 @@
+class Node {
+  constructor(val, priority) {
+    this.val = val;
+    this.priority = priority;
+  }
+}
+
 class PriorityQueue {
   constructor() {
     this.values = [];
   }
   enqueue(val, priority) {
-    this.values.push({ val, priority });
-    this.sort();
+    let queue = this.values;
+    let node = new Node(val, priority);
+    queue.push(node);
+    let index = queue.length - 1;
+    let parentIndex = Math.floor((index - 1) / 2);
+    let temp;
+    while (index > 0 && queue[index].priority < queue[parentIndex].priority) {
+      temp = queue[index];
+      queue[index] = queue[parentIndex];
+      queue[parentIndex] = temp;
+      index = parentIndex;
+      parentIndex = Math.floor((index - 1) / 2);
+    }
+    return queue;
   }
   dequeue() {
-    return this.values.shift();
-  }
-  sort() {
-    this.values.sort((a, b) => a.priority - b.priority);
+    let queue = this.values;
+    if (!queue.length) return queue;
+    let temp = queue[0];
+    queue[0] = queue[queue.length - 1];
+    queue[queue.length - 1] = temp;
+    let min = queue.pop();
+    let index = 0;
+    let smallest = getChildIndex(queue, index);
+
+    while (smallest !== index) {
+      temp = queue[smallest];
+      queue[smallest] = queue[index];
+      queue[index] = temp;
+      index = smallest;
+      smallest = getChildIndex(queue, index);
+    }
+    return min;
   }
 }
 
-const pQ = new PriorityQueue();
+function getChildIndex(queue, index) {
+  let childOneIndex = 2 * index + 1;
+  let childTwoIndex = 2 * index + 2;
+
+  if (
+    childTwoIndex < queue.length &&
+    queue[childOneIndex].priority < queue[childTwoIndex].priority
+  )
+    return childOneIndex;
+
+  if (
+    childTwoIndex < queue.length &&
+    queue[childOneIndex].priority > queue[childTwoIndex].priority
+  )
+    return childTwoIndex;
+  if (queue.length <= 2) return 1;
+  return index;
+}
 
 class Graph {
   constructor() {
@@ -106,14 +155,31 @@ class Graph {
     while (queue.values.length) {
       smallest = queue.dequeue().val;
       if (smallest === v2) break;
+      // else {
+      //   if (smallest || distance[smallest] !== Infinity) {
+      //     for (let v in list[smallest]) {
+      //       console.log(v);
+      //       let nextVtx = list[smallest][v];
+      //       let nextSmallest = distance[smallest] + nextVtx.weight;
+      //       if (nextSmallest < distance[nextVtx.vtx]) {
+      //         distance[nextVtx.vtx] = nextSmallest;
+      //         previous[nextVtx.vtx] = smallest;
+      //         queue.enqueue(nextVtx.vtx, nextSmallest);
+      //       }
+      //     }
+      //   }
+      // }
       else {
-        list[smallest].forEach((v) => {
-          if (v.weight < distance[v.vtx]) {
-            distance[v.vtx] = v.weight;
-            previous[smallest] = v.vtx;
-            queue.enqueue(v.vtx);
-          }
-        });
+        if (smallest || distance[smallest] !== Infinity) {
+          list[smallest].forEach((v) => {
+            let nextSmallest = distance[smallest] + v.weight;
+            if (nextSmallest < distance[v.vtx]) {
+              distance[v.vtx] = nextSmallest;
+              previous[v.vtx] = smallest;
+              queue.enqueue(v.vtx, nextSmallest);
+            }
+          });
+        }
       }
     }
     console.log(previous);
