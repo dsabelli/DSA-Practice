@@ -14,14 +14,21 @@ const validAnagram = (str1, str2) => {
   const dict2 = {};
   let valid = true;
   if (str1.length !== str2.length) return false;
-
-  for (let i = 0; i < str1.length; i++) {
-    dict1[i] ? dict1[i]++ : (dict1[i] = 1);
-    dict2[i] ? dict2[i]++ : (dict2[i] = 1);
-  }
+  str1
+    .split("")
+    .forEach((letter) =>
+      dict1[letter] ? dict1[letter]++ : (dict1[letter] = 1)
+    );
+  str2
+    .split("")
+    .forEach((letter) =>
+      dict2[letter] ? dict2[letter]++ : (dict2[letter] = 1)
+    );
 
   for (let key in dict1) {
     if (dict1[key] !== dict2[key]) valid = false;
   }
   return valid;
 };
+
+console.log(validAnagram("a", "ab"));
