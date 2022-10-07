@@ -7,7 +7,7 @@ var isValid = function(s) {
     for (let p of s){
         if (p==="(")stack.push(")")
         else if (p==="{")stack.push("}")
-        else if (p==="[")stack.push("]")
+         else if (p==="[")stack.push("]")
          else{if(stack.pop()!==p)return false}
 
          
